@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require('express')
 const fs = require('fs');
 const multer = require('multer')
 const app = express();
 const port = 3000;
-const path = './public/uploads';
-const upload = multer({
-    dest: path
-})
+const path = './public/uploads'
+const upload = multer({dest: path})
+app.set('view engine', 'pug')
 app.use(express.json())
 app.use(express.static(__dirname + '/public'))
 let photosArr = []
+
 app.get('/', (req, res) => {
     fs.readdir(path, function (err, items) {
         items.forEach(function (item) {
@@ -20,39 +20,40 @@ app.get('/', (req, res) => {
                 photosArr.push(`<img src="/uploads/${item}">`)
             }
         })
-        joinedPhotosArr = photosArr.join('')
-        res.send(
-            `<!DOCTYPE html>
-            <html lang="en">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <link rel="stylesheet" href="style.css">
-            <title>Kenziegram</title>
-            </head>
-            <body>
-            <form id="user-create-form" action="/upload" method="post" enctype="multipart/form-data">
+        let joinedPhotosArr = photosArr.join('')
+        res.render("head", {photos: `${joinedPhotosArr}` }
+            // `<!DOCTYPE html>
+            // <html lang="en">
+            // <head>
+            // <meta charset="UTF-8">
+            // <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            // <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            // <link rel="stylesheet" href="style.css">
+            // <title>Kenziegram</title>
+            // </head>
+            // <body>
+            // <form id="user-create-form" action="/upload" method="post" enctype="multipart/form-data">
             
-            <fieldset id="yourInfo">
+            // <fieldset id="yourInfo">
             
-            <legend>Welcome To Kenziegram!</legend>
+            // <legend>Welcome To Kenziegram!</legend>
             
-            <label for="myFile">Upload an image:</label>
-            <input type="file" id="myFile" name="myFile" />
-            <br>
-            <br>
+            // <label for="myFile">Upload an image:</label>
+            // <input type="file" id="myFile" name="myFile" />
+            // <br>
+            // <br>
             
-            <button type="submit">Submit</button>
-            <button type="reset">Reset</button>
+            // <button type="submit">Submit</button>
+            // <button type="reset">Reset</button>
             
-            </fieldset>
-            </form>
-            <div id="photosDiv">
-            ${joinedPhotosArr}
-            </div>
-            </body>
-            </html>`)
+            // </fieldset>
+            // </form>
+            // <div id="photosDiv">
+            // ${joinedPhotosArr}
+            // </div>
+            // </body>
+            // </html>`
+        )
     });
 })
 
@@ -75,7 +76,7 @@ app.post('/upload', upload.single('myFile'), function (request, response, next) 
     <button id="homepage" name="homepage" type="submit">Return To Homepage</button>
     </a>
     </body>
-    </html>`);
+    </html>`)
   })
 
 
