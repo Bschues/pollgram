@@ -33,6 +33,26 @@ app.post('/upload', upload.single('myFile'), function (request, response, next) 
     )
 })
 
+app.post('/latest', (req, res) => {
+    const latestPhotos = []
+    let serverTimestamp = 0
+    fs.readdir(path, function(err, items) {
+        items.forEach(function(item){
+            let modified = fs.statSync(path + '/' + item).mtimeMs;
+            if(modified > req.after) {
+                latestPhotos.push(item)
+            }
+            if(modified > serverTimestamp) {
+                serverTimestamp = modified
+            }
+        })
+        res.send({
+            "images": latestPhotos,
+            "timestamp": serverTimestamp
+        })
+    })
+
+})
 
 
 

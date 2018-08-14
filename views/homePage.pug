@@ -2,6 +2,7 @@ html
     head
         title Kenziegram
         link(rel="stylesheet", href="style.css")
+        script(src='/polling.js')
     body   
         form(method="post" action="/upload" id="user-create-form" enctype="multipart/form-data")
             legend Welcome to Kenziegram! 
@@ -15,7 +16,7 @@ html
             button(type="reset") Reset
 
         div(id="photosDiv") 
-           ul
+           ul(id="photosList")
             each imageName in photosArr
                 img(src="/uploads/" + imageName, alt="photo")
 
